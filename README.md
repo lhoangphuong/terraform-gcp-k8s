@@ -25,7 +25,7 @@ terraform apply
 - On develop branch: run all workflow exclude **terraform apply**
 - Make a PR
 - Merge develop to master
-- On master branch: run all workflow inculde **terraform apply**
+- On master branch: run all workflow include **terraform apply**
 
 
 ## License
