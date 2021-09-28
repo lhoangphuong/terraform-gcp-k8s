@@ -10,7 +10,7 @@
 - GCP is a public cloud platform, which provide resources for our K8S cluster
 - Terraform is an open-source infrastructure as code tool
 - Kubernetes (k8s) often refer as a container orchestration tool. It is a portable, extensible, open-source platform for managing containerized workloads and services. 
-✨ When use tdoether, magic happen ✨
+✨ When use together, magic happen ✨
 
 ## Workflow
 ```sh
