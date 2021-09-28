@@ -11,6 +11,8 @@ variable "gcp_region" {
 
 
 # google_compute_instance
+
+## master-node
 variable "machine_type_master-node" {
   description = ""
   default     = "e2-medium"
@@ -22,6 +24,22 @@ variable "zone_master-node" {
 }
 
 variable "image_master-node" {
+  description = ""
+  default     = "ubuntu-os-cloud/ubuntu-2004-lts"
+}
+
+## worker-node
+variable "machine_type_worker-node" {
+  description = ""
+  default     = "e2-medium"
+}
+
+variable "zone_worker-node" {
+  description = ""
+  default     = "asia-southeast1-a"
+}
+
+variable "image_worker-node" {
   description = ""
   default     = "ubuntu-os-cloud/ubuntu-2004-lts"
 }
