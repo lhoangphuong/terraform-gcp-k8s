@@ -1,6 +1,7 @@
 # master-node
 resource "google_compute_instance" "master-node" {
-  name         = "master-node"
+  name         = "worker-node-${var.instance_count_master-node}"
+  count        = var.instance_count_master-node
   machine_type = var.machine_type_master-node
   zone         = var.zone_master-node
 
@@ -19,7 +20,7 @@ resource "google_compute_instance" "master-node" {
   }
 
   metadata = {
-    name      = "master-node"
+    name      = "worker-node-${var.instance_count_master-node}"
     terraform = true
   }
 
@@ -29,7 +30,8 @@ resource "google_compute_instance" "master-node" {
 
 # worker-node
 resource "google_compute_instance" "worker-node" {
-  name         = "worker-node"
+  name         = "worker-node-${var.instance_count_worker-node}"
+  count        = var.instance_count_worker-node
   machine_type = var.machine_type_worker-node
   zone         = var.zone_worker-node
 
@@ -48,7 +50,7 @@ resource "google_compute_instance" "worker-node" {
   }
 
   metadata = {
-    name      = "worker-node"
+    name      = "worker-node-${var.instance_count_worker-node}"
     terraform = true
   }
 

@@ -12,19 +12,19 @@ terraform {
   }
 }
 
-# Output IP
-output "internal_ip_master-node" {
-  value = google_compute_instance.master-node.network_interface.0.network_ip
-}
+# # Output IP
+# output "internal_ip_master-node" {
+#   value = google_compute_instance.master-node.network_interface.0.network_ip
+# }
 
-output "external_ip_master-node" {
-  value = google_compute_instance.master-node.network_interface.0.access_config.0.nat_ip
-}
+# output "external_ip_master-node" {
+#   value = google_compute_instance.master-node.network_interface.0.access_config.0.nat_ip
+# }
 
-output "internal_ip_worker-node" {
-  value = google_compute_instance.worker-node.network_interface.0.network_ip
-}
+# output "internal_ip_worker-node" {
+#   value = google_compute_instance.worker-node.network_interface.0.network_ip
+# }
 
-output "external_ip_worker-node" {
-  value = google_compute_instance.worker-node.network_interface.0.access_config.0.nat_ip
-}
+# output "external_ip_worker-node" {
+#   value = google_compute_instance.worker-node.network_interface.0.access_config.0.nat_ip
+# }
