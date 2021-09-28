@@ -31,8 +31,8 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     # Destroy all infra
-    - name: Terraform Plan
-      run: terraform destroy -var-file="k8s.tfvars"
+    - name: Terraform Destroy
+      run: terraform destroy -var-file="k8s.tfvars" -auto-approve
       env:
         TF_WORKSPACE: k8s
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
