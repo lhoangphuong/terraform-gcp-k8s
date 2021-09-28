@@ -1,4 +1,4 @@
-name: 'Terraform Destroy'
+name: 'Terraform Deploy'
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -31,8 +31,18 @@ jobs:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     # Destroy all infra
-    - name: Terraform Plan
-      run: terraform destroy -var-file="k8s.tfvars"
+    - name: Terraform Deploy
+      run: terraform apply -var-file="k8s.tfvars" -auto-approve
       env:
         TF_WORKSPACE: k8s
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
