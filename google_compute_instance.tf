@@ -28,6 +28,17 @@ resource "google_compute_instance" "master-node" {
 
 }
 
+resource "google_dns_record_set" "master-node" {
+  name = "master-node-${count.index}.${google_dns_managed_zone.k8s.dns_name}"
+  count        = var.instance_count_master-node
+  type = "A"
+  ttl  = 300
+
+  managed_zone = google_dns_managed_zone.k8s.name
+
+  rrdatas = [google_compute_instance.master-node.*.network_interface[0].access_config[0].nat_ip]
+}
+
 # worker-node
 resource "google_compute_instance" "worker-node" {
   name         = "worker-node-${count.index}"
