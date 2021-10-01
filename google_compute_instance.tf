@@ -24,7 +24,7 @@ resource "google_compute_instance" "master-node" {
     terraform = true
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = file("files/master_startup_script.sh")
 
 }
 
@@ -54,6 +54,5 @@ resource "google_compute_instance" "worker-node" {
     terraform = true
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
-
+  metadata_startup_script = file("files/worker_startup_script.sh")
 }
