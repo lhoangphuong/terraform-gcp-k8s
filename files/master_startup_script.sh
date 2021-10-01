@@ -11,3 +11,5 @@ apt-get install telegraf influxdb kapacitor chronograf
 systemctl start telegraf influxdb kapacitor chronograf
 systemctl enable telegraf influxdb kapacitor chronograf
 
+# Get metadata
+DNS_NAME=$(curl -f -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/dns_name")

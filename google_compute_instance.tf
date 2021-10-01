@@ -1,69 +1,80 @@
-# master-node
+# Master-node
 resource "google_compute_instance" "master-node" {
-  name         = "master-node-${count.index}"
-  count        = var.instance_count_master-node
-  machine_type = var.machine_type_master-node
-  zone         = var.zone_master-node
 
+  count = var.instance_count_master-node # meta-argument first
+
+  name         = "master-node-${count.index + 1}"
+  machine_type = var.machine_type_master-node
+  zone         = element(var.zone_master-node, count.index)
   boot_disk {
     initialize_params {
       image = var.image_master-node
     }
   }
-
   network_interface {
     network = "default"
-
     access_config {
-      // Ephemeral public IP
+      // ephemeral public IP
     }
   }
-
   metadata = {
-    name      = "master-node-${count.index}"
+    name      = "master-node-${count.index + 1}"
+    dns_name  = "master-node-${count.index + 1}.${google_dns_managed_zone.k8s.dns_name}"
     terraform = true
   }
 
-  metadata_startup_script = file("files/master_startup_script.sh")
+  metadata_startup_script = file("files/master_startup_script.sh") # meta-argument last
 
 }
 
 resource "google_dns_record_set" "master-node" {
-  name = "master-node-${count.index}.${google_dns_managed_zone.k8s.dns_name}"
-  count        = var.instance_count_master-node
-  type = "A"
-  ttl  = 300
 
+  count = var.instance_count_master-node # meta-argument first
+
+  name         = "master-node-${count.index + 1}.${google_dns_managed_zone.k8s.dns_name}"
+  type         = "A"
+  ttl          = 300
   managed_zone = google_dns_managed_zone.k8s.name
-
-  rrdatas = [google_compute_instance.master-node.*.network_interface[0].access_config[0].nat_ip]
+  rrdatas      = [google_compute_instance.master-node[count.index].network_interface[0].access_config[0].nat_ip]
 }
 
-# worker-node
-resource "google_compute_instance" "worker-node" {
-  name         = "worker-node-${count.index}"
-  count        = var.instance_count_worker-node
-  machine_type = var.machine_type_worker-node
-  zone         = var.zone_worker-node
 
+# Worker-node
+resource "google_compute_instance" "worker-node" {
+
+  count = var.instance_count_worker-node # meta-argument first
+
+  name         = "worker-node-${count.index + 1}"
+  machine_type = var.machine_type_worker-node
+  zone         = element(var.zone_worker-node, count.index)
   boot_disk {
     initialize_params {
       image = var.image_worker-node
     }
   }
-
   network_interface {
     network = "default"
-
     access_config {
-      // Ephemeral public IP
+      // ephemeral public IP
     }
   }
-
   metadata = {
-    name      = "worker-node-${count.index}"
+    name      = "worker-node-${count.index + 1}"
+    dns_name  = "worker-node-${count.index + 1}.${google_dns_managed_zone.k8s.dns_name}"
     terraform = true
   }
 
-  metadata_startup_script = file("files/worker_startup_script.sh")
+  metadata_startup_script = file("files/worker_startup_script.sh") # meta-argument last
+
+}
+
+resource "google_dns_record_set" "worker-node" {
+
+  count = var.instance_count_worker-node # meta-argument first
+
+  name         = "worker-node-${count.index + 1}.${google_dns_managed_zone.k8s.dns_name}"
+  type         = "A"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.k8s.name
+  rrdatas      = [google_compute_instance.worker-node[count.index].network_interface[0].access_config[0].nat_ip]
 }
