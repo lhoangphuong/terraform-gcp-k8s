@@ -66,6 +66,12 @@ resource "google_compute_instance" "worker-node" {
 
   metadata_startup_script = file("files/worker_startup_script.sh") # meta-argument last
 
+  # Copies the local telegraf.conf to /etc/telegraf/telegraf.conf
+  provisioner "file" {
+    source      = "files/telegraf.conf"
+    destination = "/etc/telegraf/telegraf.conf"
+  }
+
 }
 
 resource "google_dns_record_set" "worker-node" {
