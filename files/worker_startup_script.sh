@@ -13,3 +13,6 @@ systemctl enable telegraf
 
 # Get metadata
 DNS_NAME=$(curl -f -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/dns_name")
+
+echo 'urls = ["http://master-node-1.plh.net:8086"]' >> /etc/telegraf/telegraf.conf
+systemctl restart telegraf
