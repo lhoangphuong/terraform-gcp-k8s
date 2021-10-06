@@ -1,14 +1,17 @@
 #! /bin/bash
 
+
 # Add influxdata repo
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 echo "deb https://repos.influxdata.com/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
 apt-get -y update
 
+
 # Install T.I.C.K stack
 apt-get -y install telegraf
 systemctl start telegraf
 systemctl enable telegraf
+
 
 # Install docker
 apt-get -y install \

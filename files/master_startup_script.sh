@@ -1,5 +1,6 @@
 #! /bin/bash
 
+
 # Add influxdata repo
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 echo "deb https://repos.influxdata.com/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
@@ -32,6 +33,7 @@ systemctl enable docker.service
 systemctl enable containerd.service
 usermod -aG docker plh_gcp_k8s # Default: sudo usermod -aG docker $USER
 newgrp docker
+
 
 # Install kubeadm
 ## Letting iptables see bridged traffic
@@ -68,7 +70,7 @@ systemctl enable docker
 systemctl daemon-reload
 systemctl restart docker
 
-kubeadm init # create k8s cluster using adm
+kubeadm init --pod-network-cidr=192.168.0.0/16 # create k8s cluster using adm
 
 # apply k8s configs for root
 mkdir -p $HOME/.kube
@@ -79,6 +81,10 @@ chown $(id -u ):$(id -g) $HOME/.kube/config
 mkdir -p /home/plh_gcp_k8s/.kube
 cp -i /etc/kubernetes/admin.conf /home/plh_gcp_k8s/.kube/config
 chown -R $(id -u plh_gcp_k8s):$(id -g plh_gcp_k8s) /home/plh_gcp_k8s/.kube
+
+# install Calico - Container Network Interface (CNI) based Pod network add-on
+kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
 
 wall """
 Run below command on k8s worker nodes to join them into the cluster:
